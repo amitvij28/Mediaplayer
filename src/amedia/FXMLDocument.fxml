@@ -40,11 +40,29 @@
                      <padding>
                         <Insets right="10.0" />
                      </padding></Button>
-                  <Button mnemonicParsing="false" onAction="#slowervideo" text="&lt;&lt;&lt;" />
-                  <Button mnemonicParsing="false" onAction="#slowvideo" text="&lt;&lt;" />
-                  <Button mnemonicParsing="false" onAction="#fastvideo" text="&gt;&gt;" />
-                  <Button mnemonicParsing="false" onAction="#fastervideo" text="&gt;&gt;&gt;" />
-                  <Slider fx:id="slider" prefHeight="14.0" prefWidth="123.0" />
+                  <Button mnemonicParsing="false" onAction="#slowervideo" style="-fx-background-color: green;" text="&lt;&lt;&lt;">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding></Button>
+                  <Button mnemonicParsing="false" onAction="#slowvideo" style="-fx-background-color: yellow;" text="&lt;&lt;">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding></Button>
+                  <Button mnemonicParsing="false" onAction="#fastvideo" style="-fx-background-color: yellow;" text="&gt;&gt;">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding></Button>
+                  <Button mnemonicParsing="false" onAction="#fastervideo" style="-fx-background-color: green;" text="&gt;&gt;&gt;">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding></Button>
+                  <Slider fx:id="slider" prefHeight="14.0" prefWidth="123.0" style="-fx-background-position: red;">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></Slider>
                   <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitvideo" prefHeight="20.0" prefWidth="20.0" text="Exit">
                      <padding>
                         <Insets left="10.0" right="10.0" />
@@ -55,7 +73,7 @@
       </VBox>
    </bottom>
    <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
          <children>
             <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" />
             <Slider fx:id="seekSlider" StackPane.alignment="BOTTOM_CENTER" />

@@ -5,10 +5,9 @@
  */
 package amedia;
 
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.net.URL;
-import java.time.Duration;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -20,13 +19,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 public class FXMLDocumentController implements Initializable {
    
@@ -53,14 +52,23 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
+        //found and removed bug for opening new file
+        if(mediaPlayer!=null)
+        {mediaPlayer.pause();}
+        
         FileChooser fileChooser= new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Select a file(*.mp4)","*.mp4");
         fileChooser.getExtensionFilters().add(filter);
         File file= fileChooser.showOpenDialog(null);
         filePath = file.toURI().toString();
         
+        if(mediaPlayer!=null)
+        {mediaPlayer.dispose();}
+        
         if(filePath!=null){
         Media media = new Media(filePath);
+        
+        
         mediaPlayer = new MediaPlayer(media);
         mediaView.setMediaPlayer(mediaPlayer);
            DoubleProperty width =mediaView.fitWidthProperty();
@@ -83,32 +91,37 @@ public class FXMLDocumentController implements Initializable {
                 
             }
         });
-          /*  ChangeListener<Duration> a = new ChangeListener<Duration>() {
-            @Override
-            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-                seekSlider.setValue(newValue.toMillis());
-                
-            }
-        }; 
-            
-           // EventHandler<MouseEvent> b = new EventHandler<MouseEvent>() {
-            //@Override
-            //public void handle(MouseEvent event) {
-              //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            //}
-       // };
-         //   seekSlider.setOnMouseClicked(b);
-        
-           mediaPlayer.currentTimeProperty().addListener((InvalidationListener) a);*/
-            //mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-              //  @Override
-                //public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-                  //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-               // }
-           // });
+           // found and removes bug for short slider
+           mediaPlayer.setOnReady(new Runnable() {
 
-        mediaPlayer.play();  
-        
+        @Override
+        public void run() {
+         
+seekSlider.setMin(0);
+seekSlider.setMax(media.getDuration().toSeconds());
+        }
+    });
+           
+           
+           
+       mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                        seekSlider.setValue(newValue.toSeconds());
+                    }
+                });
+                
+                    seekSlider.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        mediaPlayer.seek(Duration.seconds(seekSlider.getValue()));
+                        
+                    }
+});
+      
+       
+        //ddw  
+        mediaPlayer.play();
         
          
         }
@@ -170,15 +183,6 @@ public class FXMLDocumentController implements Initializable {
         // TODO
     }    
 
-    private static class ChangeListenerImpl implements ChangeListener<Duration> {
-
-        public ChangeListenerImpl() {
-        }
-
-        @Override
-        public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    }
+  
     
 }
