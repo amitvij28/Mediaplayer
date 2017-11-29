@@ -7,6 +7,7 @@ package amedia;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.InvalidationListener;
@@ -53,11 +54,15 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) {
         //found and removed bug for opening new file
+        
         if(mediaPlayer!=null)
         {mediaPlayer.pause();}
+        ArrayList<String> exts = new ArrayList<>();
+        exts.add("*.mp4");
+        exts.add("*.mp3");
         
         FileChooser fileChooser= new FileChooser();
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Select a file(*.mp4)","*.mp4");
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Select a file(*.mp4)",exts);
         fileChooser.getExtensionFilters().add(filter);
         File file= fileChooser.showOpenDialog(null);
         filePath = file.toURI().toString();
